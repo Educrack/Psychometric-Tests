@@ -14,10 +14,10 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Form, Input } from '@lipihipi/form';
 
 interface IListProps {
-    getQuestionsList: any;
+    getTestList: any;
     title?: string;
     breadCrumbs?: any[];
-    onAddQuestion?: () => void;
+    onAddTest?: () => void;
     onEditClick?: (_id: string) => void;
     // currentModulePermission?: any[];
 }
@@ -34,11 +34,10 @@ export const getComponent = (onClick: any, name: string) => {
 };
 
 
-const QuestionList = ({
-    getQuestionsList,
-    title,
+const TestList = ({
+    getTestList,
     breadCrumbs,
-    onAddQuestion,
+    onAddTest,
     onEditClick,
     // currentModulePermission
 }: IListProps) => {
@@ -46,14 +45,14 @@ const QuestionList = ({
         page: 1,
         perPage: 10,
     });
-    const [questions, setQuestions] = React.useState<any>({
+    const [tests, setTests] = React.useState<any>({
         totalItems: 0,
-        questions: [],
+        tests: [],
     });
 
     React.useEffect(() => {
-        getQuestionsList(params).then(({ data }: any) => {
-            setQuestions(data);
+        getTestList(params).then(({ data }: any) => {
+            setTests(data);
         });
     }, [params]);
 
@@ -70,13 +69,13 @@ const QuestionList = ({
                 {/* {currentModulePermission?.includes('read') ? ( */}
                 <>
                     <PageHeader
-                        title={title || 'Psychometric Questions'}
+                        title={'Psychometric Tests'}
                         breadCrumbs={breadCrumbs || [{ title: 'Psychometric Tests' }]}
                         component={
                             <div className='d-flex align-items-center'>
                                 {getComponent(
-                                    onAddQuestion,
-                                    'Add Questions',
+                                    onAddTest,
+                                    'Add Test',
                                     // currentModulePermission?.includes('create')
                                 )}
                             </div>
@@ -93,7 +92,7 @@ const QuestionList = ({
                                         prefix={<MdSearch />}
                                         id="searchTest"
                                         name="q"
-                                        placeholder="Enter here to search for questions"
+                                        placeholder="Enter here to search for Tests"
                                     />
                                 </div>
                                 <Button shape="primary" className="ml-3" type="submit">
@@ -104,7 +103,7 @@ const QuestionList = ({
                     />
 
                     <PaginatedTable
-                        data={questions.questions}
+                        data={tests.tests}
                         columns={[
                             {
                                 dataRenderer: (_data: any, index: number) => (
@@ -117,10 +116,18 @@ const QuestionList = ({
                             },
                             {
                                 dataRenderer: (data: any) => (
-                                    <div className="primary-text">{data?.text}</div>
+                                    <div className="primary-text">{data?.name}</div>
                                 ),
                                 title: 'Question',
-                                width: '70%',
+                                width: '50%',
+                            },
+                            {
+                                dataRenderer: (data: any) => (
+                                    <div className="primary-text">{data?.totalDurationInMinute
+                                    }</div>
+                                ),
+                                title: 'Duration',
+                                width: '20%',
                             },
                             {
                                 dataRenderer: (data: any) => (
@@ -140,7 +147,7 @@ const QuestionList = ({
                                 width: '10%',
                             },
                         ]}
-                        totalItems={questions.totalItems}
+                        totalItems={tests.totalItems}
                         onPageChange={(page: any) => {
                             setParams({ ...params, page: page });
                         }}
@@ -159,4 +166,4 @@ const QuestionList = ({
     );
 };
 
-export default QuestionList;
+export default TestList;

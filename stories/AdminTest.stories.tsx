@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import EduCrackAPI from '@lipihipi/client-sdk';
-import QuestionList from '../src/admin/index';
-import CreateQuestion from '../src/admin/create/index'
+import TestList from '../src/adminTest/index';
+import CreateTest from '../src/adminTest/create/index'
 import '@lipihipi/theme';
 import EducrackAPI from '@lipihipi/client-sdk';
 // import './style.css';
@@ -13,7 +13,7 @@ export default {
 
 EduCrackAPI.setENV('development');
 
-export const adminQuestionList = () => {
+export const adminTestList = () => {
     const [isLoggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
@@ -30,10 +30,10 @@ export const adminQuestionList = () => {
     return (
         <BrowserRouter>
             {isLoggedIn && (
-                <QuestionList
+                <TestList
                     breadCrumbs={[{ title: 'Psychometric Tests', link: '/' }]}
-                    getQuestionsList={EducrackAPI.psychometricQuestion.list}
-                    onAddQuestion={() => console.log("On Add Question")}
+                    getTestList={EducrackAPI.psychometricTest.list}
+                    onAddTest={() => console.log("On Add Question")}
                     onEditClick={(id: String) => {
                         console.log('Edit Question clicked', id);
                     }
@@ -44,7 +44,7 @@ export const adminQuestionList = () => {
     );
 };
 
-export const adminAddQuestion = () => {
+export const adminAddTest = () => {
     const [isLoggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
@@ -61,12 +61,13 @@ export const adminAddQuestion = () => {
     return (
         <BrowserRouter>
             {isLoggedIn && (
-                <CreateQuestion
-                    title={"Add a Question"}
+                <CreateTest
+                    title={"Add a Test"}
                     breadCrumbs={[{ title: 'add question', link: '/' }]}
-                    getQuestion={EducrackAPI.psychometricQuestion.get}
-                    updateQuestion={EducrackAPI.psychometricQuestion.update}
-                    createQuestion={EducrackAPI.psychometricQuestion.create}
+                    getQuestionList={EducrackAPI.psychometricQuestion.list}
+                    getTest={EducrackAPI.psychometricTest.get}
+                    updateTest={EducrackAPI.psychometricTest.update}
+                    createTests={EducrackAPI.psychometricTest.create}
                     afterAddOrEditQuestion={() => { console.log('redirect to list'); }}
                 />
             )}
@@ -74,7 +75,7 @@ export const adminAddQuestion = () => {
     );
 };
 
-export const adminEditQuestion = () => {
+export const adminEditTest = () => {
     const [isLoggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
@@ -91,13 +92,14 @@ export const adminEditQuestion = () => {
     return (
         <BrowserRouter>
             {isLoggedIn && (
-                <CreateQuestion
-                    id={"6421dd135f546a11fe7221ce"}
-                    title={"Edit Question"}
-                    breadCrumbs={[{ title: 'edit question', link: '/' }]}
-                    getQuestion={EducrackAPI.psychometricQuestion.get}
-                    updateQuestion={EducrackAPI.psychometricQuestion.update}
-                    createQuestion={EducrackAPI.psychometricQuestion.create}
+                <CreateTest
+                    id={"6435bed1b7bda88c3afda3c9"}
+                    title={"Add a Test"}
+                    breadCrumbs={[{ title: 'add question', link: '/' }]}
+                    getQuestionList={EducrackAPI.psychometricQuestion.list}
+                    getTest={EducrackAPI.psychometricTest.get}
+                    updateTest={EducrackAPI.psychometricTest.update}
+                    createTests={EducrackAPI.psychometricTest.create}
                     afterAddOrEditQuestion={() => { console.log('redirect to list'); }}
                 />
             )}
