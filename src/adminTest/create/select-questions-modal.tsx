@@ -16,15 +16,13 @@ const SelectQuestionsModal = ({
 }: any) => {
   const [params, setParams] = useState<any>({
     populate: true,
-    isRecent: true
+    isRecent: true,
   });
   const [questions, setQuestions] = useState<any>({
     totalItems: 0,
     questions: [],
   });
-  //const [subjects, setSubjects] = React.useState<any>([]);
-  const [topics, setTopics] = React.useState<any>([]);
-  console.log(setTopics)
+  const [topics] = React.useState<any>([]);
   useEffect(() => {
     getQuestions({ ...params }).then((res: any) => {
       setQuestions(res.data);
@@ -63,7 +61,7 @@ const SelectQuestionsModal = ({
 
   const getCheckStatus = (data: any) => {
     let status = false;
-    initialValues?.questions.forEach((file: any) => {
+    initialValues?.forEach((file: any) => {
       if (file === data._id) {
         status = true;
       }
@@ -164,10 +162,7 @@ const SelectQuestionsModal = ({
                           id={data._id}
                           name={data._id}
                           onChange={(event: any) => {
-                            onChangeFreeQuestions(
-                              event.target.checked,
-                              data
-                            );
+                            onChangeFreeQuestions(event.target.checked, data);
                           }}
                         />
                       </Form>
