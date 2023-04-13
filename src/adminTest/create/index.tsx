@@ -59,20 +59,7 @@ const CreateTest = ({
     const payload = {
       name: values.name,
       totalDurationInMinute: values.totalDurationInMinute,
-      questionSets: [
-        {
-          name: 'group a',
-          sections: [
-            {
-              sections: null,
-
-              questions: questionData?.map((v: any) => ({
-                question: v,
-              })),
-            },
-          ],
-        },
-      ],
+      questions: questionData,
     };
 
     const method = id ? updateTest(id, payload) : createTests(payload);
