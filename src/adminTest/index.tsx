@@ -110,19 +110,31 @@ const TestList = ({
   const handleSubmit = async (values: any) => {
     setLoading(true);
     try {
-      const { status } = await assignTest(values);
-      apiStatus(status, 'Test Assigned.');
+      const data = await assignTest(values);
+      apiStatus(data, 'Test Assigned.');
     } catch {
       showErrorPopup(setLoading);
     }
   };
 
-  const apiStatus = (status: number, text: string) => {
-    if (status === 200) {
+  const apiStatus = (data: any, text: string) => {
+    if (
+      data?.status === 200 &&
+      data?.data?.message === 'Successfully Assigned'
+    ) {
       swal({
         title: 'Success',
         text,
         icon: 'success',
+      }).then(() => {
+        setShowAssignTestToStudentModal(null);
+        setLoading(false);
+      });
+    } else if (data?.status === 200) {
+      swal({
+        title: 'Error',
+        text: data?.data?.message,
+        icon: 'warning',
       }).then(() => {
         setShowAssignTestToStudentModal(null);
         setLoading(false);
