@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, Input } from '@lipihipi/form';
-import { Row, Col, Button, PageHeader } from '@lipihipi/ec-ui';
+import { Row, Col, Button, PageHeader, Loader } from '@lipihipi/ec-ui';
 import swal from 'sweetalert';
 import SelectQuestionsModal from './select-questions-modal';
 import Questions from './questions';
@@ -20,6 +20,7 @@ const CreateTest = ({
   const [questionData, setQuestionData] = React.useState<any>([]);
   const [data, setData] = React.useState<any>({});
   const [isOpenTest, setIsOpenTest] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
     if (id) {
@@ -35,7 +36,17 @@ const CreateTest = ({
         EducrackAPI.psychometricQuestion
           .get(value, { populate: true })
           .then(({ data }: any) => {
-            setQuestionData([...questionData, data]);
+            setQuestionData((oldData: any) => [...oldData, data]);
+            setLoading(false);
+          })
+          .catch(err => {
+            setLoading(false);
+            swal({
+              title: 'Error',
+              text: err.message || 'Server error!',
+              icon: 'error',
+              dangerMode: false,
+            });
           });
       });
     }
@@ -87,84 +98,88 @@ const CreateTest = ({
 
   return (
     <section className="main-structure">
-      <>
-        <PageHeader
-          title={title || 'Create Program'}
-          breadCrumbs={
-            breadCrumbs || [
-              { title: 'Home', link: '/dashboard' },
-              { title: 'Create Program', link: '/program' },
-            ]
-          }
-        />
-        <Form
-          initialValues={data}
-          validationSchema={''}
-          onSubmit={handleSubmit}
-          render={() => {
-            return (
-              <>
-                <div>
-                  <Row spacing={20}>
-                    <Col xs={12} md={12}>
-                      <Input
-                        id="name"
-                        name="name"
-                        label="Name"
-                        placeholder="Enter your Test Name..."
-                        required
-                      />
-                    </Col>
-                    <Col xs={12} md={6}>
-                      <Input
-                        id="totalDurationInMinute"
-                        name="totalDurationInMinute"
-                        label="Total Duration(Minute)"
-                        type="number"
-                        required
-                      />
-                    </Col>
-                    <Col>
-                      <Button
-                        className="px-5"
-                        shape="secondary"
-                        type="button"
-                        onClick={() => {
-                          setIsOpenTest(true);
-                        }}
-                      >
-                        Add Questions
-                      </Button>
-                    </Col>
-                  </Row>
-                </div>
-                <Questions data={questionData} />
-                <div className="mt-3">
-                  <div className="row ml-0">
-                    <Button shape="primary" className="ml-3" type="submit">
-                      Save{' '}
-                    </Button>
-                  </div>
-                </div>
-              </>
-            );
-          }}
-        />
-
-        {isOpenTest ? (
-          <SelectQuestionsModal
-            isOpen={isOpenTest}
-            onRequestClose={() => {
-              setIsOpenTest(false);
-            }}
-            initialValues={questionData?.map((v: any) => v?._id)}
-            getQuestions={getQuestionList}
-            onChangeFreeQuestions={onChangeFreeQuestions}
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <PageHeader
+            title={title || 'Create Program'}
+            breadCrumbs={
+              breadCrumbs || [
+                { title: 'Home', link: '/dashboard' },
+                { title: 'Create Program', link: '/program' },
+              ]
+            }
           />
-        ) : (
-          ''
-        )}
-      </>
+          <Form
+            initialValues={data}
+            validationSchema={''}
+            onSubmit={handleSubmit}
+            render={() => {
+              return (
+                <>
+                  <div>
+                    <Row spacing={20}>
+                      <Col xs={12} md={12}>
+                        <Input
+                          id="name"
+                          name="name"
+                          label="Name"
+                          placeholder="Enter your Test Name..."
+                          required
+                        />
+                      </Col>
+                      <Col xs={12} md={6}>
+                        <Input
+                          id="totalDurationInMinute"
+                          name="totalDurationInMinute"
+                          label="Total Duration(Minute)"
+                          type="number"
+                          required
+                        />
+                      </Col>
+                      <Col>
+                        <Button
+                          className="px-5"
+                          shape="secondary"
+                          type="button"
+                          onClick={() => {
+                            setIsOpenTest(true);
+                          }}
+                        >
+                          Add Questions
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
+                  <Questions data={questionData} />
+                  <div className="mt-3">
+                    <div className="row ml-0">
+                      <Button shape="primary" className="ml-3" type="submit">
+                        Save{' '}
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              );
+            }}
+          />
+
+          {isOpenTest ? (
+            <SelectQuestionsModal
+              isOpen={isOpenTest}
+              onRequestClose={() => {
+                setIsOpenTest(false);
+              }}
+              initialValues={questionData?.map((v: any) => v?._id)}
+              getQuestions={getQuestionList}
+              onChangeFreeQuestions={onChangeFreeQuestions}
+            />
+          ) : (
+            ''
+          )}
+        </>
+      )}
     </section>
   );
 };
