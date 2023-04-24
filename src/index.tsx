@@ -1,7 +1,6 @@
-import QuestionList from "./admin/index";
-import CreateQuestion from "./admin/create/index"
+import QuestionList from './admin/index';
+import CreateQuestion from './admin/create/index';
+import CreateTest from './adminTest/create';
+import TestList from './adminTest';
 
-export {
-    QuestionList, 
-    CreateQuestion
-}
+export { TestList, CreateTest, QuestionList, CreateQuestion };
