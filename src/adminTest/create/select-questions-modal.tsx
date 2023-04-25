@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, CheckBox, Input } from '@lipihipi/form';
-import { Button, Modal, Table } from '@lipihipi/ec-ui';
+import { Button, Modal, Pagination, Table } from '@lipihipi/ec-ui';
 import { MdSearch } from 'react-icons/md';
 
 const mapOptions = (values: any[]) => {
@@ -17,12 +17,14 @@ const SelectQuestionsModal = ({
   const [params, setParams] = useState<any>({
     populate: true,
     isRecent: true,
+    page: 1,
   });
   const [questions, setQuestions] = useState<any>({
     totalItems: 0,
     questions: [],
   });
   const [topics] = React.useState<any>([]);
+
   useEffect(() => {
     getQuestions({ ...params }).then((res: any) => {
       setQuestions(res.data);
@@ -186,6 +188,14 @@ const SelectQuestionsModal = ({
           </Button>
         </div>
       </div>
+      <Pagination
+        totalItems={questions.totalItems}
+        currentPage={params.page || 1}
+        itemsPerPage={10}
+        onPageChange={(page: number) => {
+          setParams({ ...params, page: page });
+        }}
+      />
     </Modal>
   );
 };

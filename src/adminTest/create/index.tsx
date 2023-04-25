@@ -20,7 +20,7 @@ const CreateTest = ({
   const [questionData, setQuestionData] = React.useState<any>([]);
   const [data, setData] = React.useState<any>({});
   const [isOpenTest, setIsOpenTest] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
     if (id) {
@@ -79,7 +79,7 @@ const CreateTest = ({
       .then(() => {
         swal({
           title: 'Success',
-          text: `Program ${id ? 'Updated' : 'Created'}`,
+          text: `Test ${id ? 'Updated' : 'Created'}`,
           icon: 'success',
         }).then(function() {
           formik.resetForm();
@@ -103,11 +103,11 @@ const CreateTest = ({
       ) : (
         <>
           <PageHeader
-            title={title || 'Create Program'}
+            title={title || 'Create Test'}
             breadCrumbs={
               breadCrumbs || [
                 { title: 'Home', link: '/dashboard' },
-                { title: 'Create Program', link: '/program' },
+                { title: 'Create Test', link: '/pyschometric/test' },
               ]
             }
           />

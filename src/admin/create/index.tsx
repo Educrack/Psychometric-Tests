@@ -84,7 +84,7 @@ const CreateQuestion = ({
             createQuestion(payload).then(() => {
                 swal({
                     title: 'Success',
-                    text: 'Program Created',
+                    text: `Question ${id ? 'Updated' : 'Created'}`,
                     icon: 'success',
                 }).then(function () {
                     formik.resetForm();
@@ -108,11 +108,11 @@ const CreateQuestion = ({
         <section className='main-structure'>
             <>
                 <PageHeader
-                    title={title || 'Create Program'}
+                    title={title || 'Create Questions'}
                     breadCrumbs={
                         breadCrumbs || [
                             { title: 'Home', link: '/dashboard' },
-                            { title: 'Create Program', link: '/program' },
+                            { title: 'Create Questions', link: '/pyschometric' },
                         ]
                     }
                 />
