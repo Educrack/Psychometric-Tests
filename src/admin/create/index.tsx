@@ -21,13 +21,12 @@ const CreateQuestion = ({
     useEffect(() => {
         if (id) {
             getQuestion(id).then(({ data }: any) => {
-                console.log(data, 'data')
                 let formattedData = {
-                    text:data.text,
-                    d:data.score.d,
-                    s:data.score.s,
-                    i:data.score.i,
-                    c:data.score.c
+                    text: data.text,
+                    d: data.score.d,
+                    s: data.score.s,
+                    i: data.score.i,
+                    c: data.score.c
                 }
                 setData(formattedData)
             })
@@ -40,6 +39,7 @@ const CreateQuestion = ({
         let payload;
         if (id) {
             payload = {
+                _id: id,
                 text: values.text,
                 score: {
                     "d": values.d,
@@ -64,7 +64,7 @@ const CreateQuestion = ({
             updateQuestion(payload).then(() => {
                 swal({
                     title: 'Success',
-                    text: 'Program Updated',
+                    text: 'Question Updated',
                     icon: 'success',
                 }).then(function () {
                     formik.resetForm();
@@ -105,7 +105,7 @@ const CreateQuestion = ({
 
 
     return (
-        <section className='main-structure'>
+        <section className="main-structure">
             <>
                 <PageHeader
                     title={title || 'Create Questions'}
@@ -118,68 +118,41 @@ const CreateQuestion = ({
                 />
                 <Form
                     initialValues={data}
-                    validationSchema={""}
+                    validationSchema={''}
                     onSubmit={handleSubmit}
                     render={({ values, setFieldValue, errors, ...rest }: any) => {
-                        console.log(rest)
+                        console.log(rest);
                         return (
                             <>
-                                <div>
-                                    <Row spacing={20}>
-                                        <Col xs={12} md={12}>
-                                            <Input
-                                                id="text"
-                                                name="text"
-                                                label="Question"
-                                                placeholder="Enter your Question..."
-                                                required
-                                            />
-                                        </Col>
-                                        <Col xs={12} md={6}>
-                                            <Input
-                                                id="d"
-                                                name="d"
-                                                label="D"
-                                                type="number"
-                                                required
-                                            />
-                                        </Col>
-                                        <Col xs={12} md={6}>
-                                            <Input
-                                                id="s"
-                                                name="s"
-                                                type="number"
-                                                label="S"
-                                                required
-                                            />
-                                        </Col>
-                                        <Col xs={12} md={6}>
-                                            <Input
-                                                id="i"
-                                                name="i"
-                                                label="I"
-                                                type="number"
-                                            />
-                                        </Col>
-                                        <Col xs={12} md={12}>
-                                            <div className='form-group'>
-                                                <Input
-                                                    id="c"
-                                                    name="c"
-                                                    type="number"
-                                                    label="C"
-                                                    required
-                                                />
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </div>
+                                <Row spacing={20}>
+                                    <Col xs={12} md={12}>
+                                        <Input
+                                            id="text"
+                                            name="text"
+                                            label="Question"
+                                            placeholder="Enter your Question..."
+                                            required
+                                        />
+                                    </Col>
+                                    <Col xs={12} md={1}>
+                                        <Input id="d" name="d" label="D" type="number" required />
+                                    </Col>
+                                    <Col xs={12} md={1}>
+                                        <Input id="i" name="i" label="I" type="number" required />
+                                    </Col>
+                                    <Col xs={12} md={1}>
+                                        <Input id="s" name="s" type="number" label="S" required />
+                                    </Col>
+                                    <Col xs={12} md={1}>
+                                        <div className="form-group">
+                                            <Input id="c" name="c" type="number" label="C" required />
+                                        </div>
+                                    </Col>
+                                </Row>
                                 <div className="mt-3">
-                                    <div className="row ml-0">
-                                        <Button shape="primary" className="ml-3" type="submit">
-                                            Save{' '}
-                                        </Button>
-                                    </div>
+                                    <Button shape="primary" type="submit">
+                                        Save
+                                    </Button>
                                 </div>
                             </>
                         );

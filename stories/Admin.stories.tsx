@@ -92,7 +92,7 @@ export const adminEditQuestion = () => {
         <BrowserRouter>
             {isLoggedIn && (
                 <CreateQuestion
-                    id={"6421dd135f546a11fe7221ce"}
+                    id={"64414b25d58e223de6b02753"}
                     title={"Edit Question"}
                     breadCrumbs={[{ title: 'edit question', link: '/' }]}
                     getQuestion={EducrackAPI.psychometricQuestion.get}
