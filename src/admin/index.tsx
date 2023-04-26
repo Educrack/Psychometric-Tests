@@ -45,6 +45,7 @@ const QuestionList = ({
     const [params, setParams] = useState<any>({
         page: 1,
         perPage: 10,
+        recent: true
     });
     const [questions, setQuestions] = React.useState<any>({
         totalItems: 0,
