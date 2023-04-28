@@ -66,6 +66,7 @@ const TestList = ({
   const [params, setParams] = useState<any>({
     page: 1,
     perPage: 10,
+    isRecent: true
   });
   const [tests, setTests] = React.useState<any>({
     totalItems: 0,
