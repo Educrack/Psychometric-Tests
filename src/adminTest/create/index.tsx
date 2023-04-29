@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input } from '@lipihipi/form';
+import { Form, Input, RichTextEditor } from '@lipihipi/form';
 import { Row, Col, Button, PageHeader, Loader } from '@lipihipi/ec-ui';
 import swal from 'sweetalert';
 import SelectQuestionsModal from './select-questions-modal';
@@ -15,6 +15,8 @@ const CreateTest = ({
   updateTest,
   createTests,
   afterAddOrEditTest,
+  createAsset,
+  getAssetUrl,
 }: any) => {
   //   const [questions, setQuestions] = React.useState<any>([]);
   const [questionData, setQuestionData] = React.useState<any>([]);
@@ -136,6 +138,16 @@ const CreateTest = ({
                           label="Total Duration(Minute)"
                           type="number"
                           required
+                        />
+                      </Col>
+                      <Col xs={12} md={6}>
+                        <RichTextEditor
+                          id={'instruction'}
+                          name={'instruction'}
+                          label={'Instructions'}
+                          required
+                          uploadFile={createAsset}
+                          getAssetUrl={getAssetUrl}
                         />
                       </Col>
                       <Col>

@@ -73,6 +73,8 @@ export const adminAddTest = () => {
           afterAddOrEditQuestion={() => {
             console.log('redirect to list');
           }}
+          createAsset={EduCrackAPI.asset.create}
+          getAssetUrl={EduCrackAPI.asset.getAssetUrl}
         />
       )}
     </BrowserRouter>
@@ -107,6 +109,8 @@ export const adminEditTest = () => {
           afterAddOrEditQuestion={() => {
             console.log('redirect to list');
           }}
+          createAsset={EduCrackAPI.asset.create}
+          getAssetUrl={EduCrackAPI.asset.getAssetUrl}
         />
       )}
     </BrowserRouter>
