@@ -73,6 +73,7 @@ const CreateTest = ({
       name: values.name,
       totalDurationInMinute: values.totalDurationInMinute,
       questions: questionData,
+      instruction: values.instruction,
     };
 
     const method = id ? updateTest(id, payload) : createTests(payload);
