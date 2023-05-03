@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import SelectQuestionsModal from './select-questions-modal';
 import Questions from './questions';
 import EducrackAPI from '@lipihipi/client-sdk';
+import { TestSchema } from './test.schema';
 
 const CreateTest = ({
   id,
@@ -116,7 +117,7 @@ const CreateTest = ({
           />
           <Form
             initialValues={data}
-            validationSchema={''}
+            validationSchema={TestSchema}
             onSubmit={handleSubmit}
             render={() => {
               return (

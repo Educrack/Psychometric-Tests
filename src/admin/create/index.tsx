@@ -5,6 +5,7 @@ import {
 } from '@lipihipi/form';
 import { Row, Col, Button, PageHeader } from '@lipihipi/ec-ui';
 import swal from 'sweetalert';
+import { QuestionsSchema } from './question.schema';
 
 const CreateQuestion = ({
     id,
@@ -118,7 +119,7 @@ const CreateQuestion = ({
                 />
                 <Form
                     initialValues={data}
-                    validationSchema={''}
+                    validationSchema={QuestionsSchema}
                     onSubmit={handleSubmit}
                     render={({ values, setFieldValue, errors, ...rest }: any) => {
                         console.log(rest);
