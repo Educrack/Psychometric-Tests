@@ -26,6 +26,7 @@ interface IListProps {
   assignTest: any;
   getUserGroup: any;
   getUserByName: any;
+  onUpdateTest: any;
 }
 
 export const showErrorPopup = (setLoading: any) => {
@@ -60,13 +61,14 @@ const TestList = ({
   getUserGroup,
   getUserByName,
   assignTest,
+  onUpdateTest,
 }: IListProps) => {
   const [loading, setLoading] = useState(true);
 
   const [params, setParams] = useState<any>({
     page: 1,
     perPage: 10,
-    isRecent: true
+    isRecent: true,
   });
   const [tests, setTests] = React.useState<any>({
     totalItems: 0,
@@ -111,6 +113,14 @@ const TestList = ({
   const handleSubmit = async (values: any) => {
     setLoading(true);
     try {
+      if (showAssignTestToStudentModal === 'center') {
+        const { status } = await onUpdateTest(values.test, {
+          center: values.center,
+        });
+        apiStatus(status, 'Test Assigned.');
+
+        return;
+      }
       const data = await assignTest(values);
       apiStatus(data, 'Test Assigned.');
     } catch {
@@ -316,6 +326,16 @@ const TestList = ({
                           getUserByName={getUserByName}
                           name="user"
                         />
+                        <br />
+                        <hr />
+                        <Label
+                          id="new_user"
+                          label="For new user"
+                          className="text-dark font-weight-bolder"
+                        />
+                        <Input name="name" id="name" placeholder="Name" />
+                        <Input name="email" id="email" placeholder="Email" />
+                        <Input name="mobile" id="mobile" placeholder="Mobile" />
                       </div>
                     </>
                   )}

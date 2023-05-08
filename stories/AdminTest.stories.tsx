@@ -40,6 +40,7 @@ export const adminTestList = () => {
           getUserGroup={EduCrackAPI.userGroup.list}
           getUserByName={EduCrackAPI.user.list}
           assignTest={EducrackAPI.psychometricUserTest.assign}
+          onUpdateTest={EduCrackAPI.psychometricTest.update}
         />
       )}
     </BrowserRouter>
