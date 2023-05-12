@@ -1,5 +1,6 @@
 import { Table } from '@lipihipi/ec-ui';
 import React, { useEffect } from 'react';
+
 import { cloneDeep } from 'lodash';
 
 const Questions = ({ data }: any) => {
@@ -20,6 +21,7 @@ const Questions = ({ data }: any) => {
   const handleOnDragEnd = (dataItem: object, index: number) => {
     const prevData = cloneDeep(dataValue);
     prevData.splice(index, 1);
+    //@ts-ignore
     prevData.splice(dragObject?.index, 0, dataItem);
     setData(prevData);
   };
