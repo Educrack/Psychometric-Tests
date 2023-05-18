@@ -35,14 +35,13 @@ const CreateTest = ({
 
   useEffect(() => {
     if (id) {
-      data?.questions?.map((value: any) => {
-        EducrackAPI.psychometricQuestion
-          .get(value, { populate: true })
-          .then(({ data }: any) => {
+      const fetchData = async () => {
+        for (const value of data?.questions || []) {
+          try {
+            const { data } = await EducrackAPI.psychometricQuestion.get(value, { populate: true });
             setQuestionData((oldData: any) => [...oldData, data]);
             setLoading(false);
-          })
-          .catch(err => {
+          } catch (err) {
             setLoading(false);
             swal({
               title: 'Error',
@@ -50,8 +49,10 @@ const CreateTest = ({
               icon: 'error',
               dangerMode: false,
             });
-          });
-      });
+          }
+        }
+      };
+      fetchData();
     }
   }, [data]);
 
@@ -85,7 +86,7 @@ const CreateTest = ({
           title: 'Success',
           text: `Test ${id ? 'Updated' : 'Created'}`,
           icon: 'success',
-        }).then(function() {
+        }).then(function () {
           formik.resetForm();
           afterAddOrEditTest();
         });
@@ -98,6 +99,10 @@ const CreateTest = ({
           dangerMode: true,
         });
       });
+  };
+
+  const updateQuestionData = (data: any) => {
+    setQuestionData(data);
   };
 
   return (
@@ -166,7 +171,7 @@ const CreateTest = ({
                       </Col>
                     </Row>
                   </div>
-                  <Questions data={questionData} />
+                  <Questions data={questionData} updateQuestionData={updateQuestionData} />
                   <div className="mt-3">
                     <div className="row ml-0">
                       <Button shape="primary" className="ml-3" type="submit">

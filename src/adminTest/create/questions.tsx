@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 import { cloneDeep } from 'lodash';
 
-const Questions = ({ data }: any) => {
+const Questions = ({ data, updateQuestionData }: any) => {
   const [dataValue, setData] = React.useState([]);
   const [dragObject, setDragObject] = React.useState({
     index: 0,
@@ -24,6 +24,7 @@ const Questions = ({ data }: any) => {
     //@ts-ignore
     prevData.splice(dragObject?.index, 0, dataItem);
     setData(prevData);
+    updateQuestionData(prevData);
   };
 
   return (
