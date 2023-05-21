@@ -15,7 +15,7 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Form, Input, Label, Select } from '@lipihipi/form';
 import SearchableSelect from '../components/searchable-select';
 import swal from 'sweetalert';
-import { commonApiError } from 'admin/errorModule';
+import { commonApiError } from 'admin/create/errorModule';
 
 interface IListProps {
   getTestList: any;

@@ -6,7 +6,7 @@ import {
 import { Row, Col, Button, PageHeader, Loader } from '@lipihipi/ec-ui';
 import swal from 'sweetalert';
 import { QuestionsSchema } from './question.schema';
-import { commonApiError } from 'admin/errorModule';
+import { commonApiError } from 'admin/create/errorModule';
 
 const CreateQuestion = ({
     id,
