@@ -3,9 +3,10 @@ import {
     Form,
     Input,
 } from '@lipihipi/form';
-import { Row, Col, Button, PageHeader } from '@lipihipi/ec-ui';
+import { Row, Col, Button, PageHeader, Loader } from '@lipihipi/ec-ui';
 import swal from 'sweetalert';
 import { QuestionsSchema } from './question.schema';
+import { commonApiError } from 'admin/errorModule';
 
 const CreateQuestion = ({
     id,
@@ -16,21 +17,26 @@ const CreateQuestion = ({
     createQuestion,
     afterAddOrEditQuestion
 }: any) => {
-
+    const [loading, setLoading] = React.useState(false);
     const [data, setData] = React.useState<any>({});
 
     useEffect(() => {
         if (id) {
-            getQuestion(id).then(({ data }: any) => {
-                let formattedData = {
-                    text: data.text,
-                    d: data.score.d,
-                    s: data.score.s,
-                    i: data.score.i,
-                    c: data.score.c
-                }
-                setData(formattedData)
-            })
+            getQuestion(id)
+                .then(({ data }: any) => {
+                    let formattedData = {
+                        text: data.text,
+                        d: data.score.d,
+                        s: data.score.s,
+                        i: data.score.i,
+                        c: data.score.c
+                    }
+                    setData(formattedData);
+                    setLoading(false);
+                })
+                .catch((err: any) => {
+                    commonApiError(err)
+                });
         }
     }, []);
 
@@ -73,12 +79,7 @@ const CreateQuestion = ({
                 });
             })
                 .catch((err: any) => {
-                    swal({
-                        title: 'Error',
-                        text: err?.data?.message || 'Server Error!',
-                        icon: 'error',
-                        dangerMode: true,
-                    });
+                    commonApiError(err)
                 });
         }
         else {
@@ -93,12 +94,7 @@ const CreateQuestion = ({
                 });
             })
                 .catch((err: any) => {
-                    swal({
-                        title: 'Error',
-                        text: err?.data?.message || 'Server Error!',
-                        icon: 'error',
-                        dangerMode: true,
-                    });
+                    commonApiError(err)
                 });
         }
     };
@@ -106,61 +102,67 @@ const CreateQuestion = ({
 
 
     return (
-        <section className="main-structure">
-            <>
-                <PageHeader
-                    title={title || 'Create Questions'}
-                    breadCrumbs={
-                        breadCrumbs || [
-                            { title: 'Home', link: '/dashboard' },
-                            { title: 'Create Questions', link: '/pyschometric' },
-                        ]
-                    }
-                />
-                <Form
-                    initialValues={data}
-                    validationSchema={QuestionsSchema}
-                    onSubmit={handleSubmit}
-                    render={({ values, setFieldValue, errors, ...rest }: any) => {
-                        console.log(rest);
-                        return (
-                            <>
-                                <Row spacing={20}>
-                                    <Col xs={12} md={12}>
-                                        <Input
-                                            id="text"
-                                            name="text"
-                                            label="Question"
-                                            placeholder="Enter your Question..."
-                                            required
-                                        />
-                                    </Col>
-                                    <Col xs={12} md={1}>
-                                        <Input id="d" name="d" label="D" type="number" required />
-                                    </Col>
-                                    <Col xs={12} md={1}>
-                                        <Input id="i" name="i" label="I" type="number" required />
-                                    </Col>
-                                    <Col xs={12} md={1}>
-                                        <Input id="s" name="s" type="number" label="S" required />
-                                    </Col>
-                                    <Col xs={12} md={1}>
-                                        <div className="form-group">
-                                            <Input id="c" name="c" type="number" label="C" required />
+        <>
+            {loading ? (
+                <Loader />
+            ) : (
+                <section className="main-structure">
+                    <>
+                        <PageHeader
+                            title={title || 'Create Questions'}
+                            breadCrumbs={
+                                breadCrumbs || [
+                                    { title: 'Home', link: '/dashboard' },
+                                    { title: 'Create Questions', link: '/pyschometric' },
+                                ]
+                            }
+                        />
+                        <Form
+                            initialValues={data}
+                            validationSchema={QuestionsSchema}
+                            onSubmit={handleSubmit}
+                            render={({ values, setFieldValue, errors, ...rest }: any) => {
+                                console.log(rest);
+                                return (
+                                    <>
+                                        <Row spacing={20}>
+                                            <Col xs={12} md={12}>
+                                                <Input
+                                                    id="text"
+                                                    name="text"
+                                                    label="Question"
+                                                    placeholder="Enter your Question..."
+                                                    required
+                                                />
+                                            </Col>
+                                            <Col xs={12} md={1}>
+                                                <Input id="d" name="d" label="D" type="number" required />
+                                            </Col>
+                                            <Col xs={12} md={1}>
+                                                <Input id="i" name="i" label="I" type="number" required />
+                                            </Col>
+                                            <Col xs={12} md={1}>
+                                                <Input id="s" name="s" type="number" label="S" required />
+                                            </Col>
+                                            <Col xs={12} md={1}>
+                                                <div className="form-group">
+                                                    <Input id="c" name="c" type="number" label="C" required />
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                        <div className="mt-3">
+                                            <Button shape="primary" type="submit">
+                                                Save
+                                            </Button>
                                         </div>
-                                    </Col>
-                                </Row>
-                                <div className="mt-3">
-                                    <Button shape="primary" type="submit">
-                                        Save
-                                    </Button>
-                                </div>
-                            </>
-                        );
-                    }}
-                />
-            </>
-        </section>
+                                    </>
+                                );
+                            }}
+                        />
+                    </>
+                </section>
+            )}
+        </>
     );
 };
 
