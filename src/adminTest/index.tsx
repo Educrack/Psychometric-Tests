@@ -15,6 +15,7 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Form, Input, Label, Select } from '@lipihipi/form';
 import SearchableSelect from '../components/searchable-select';
 import swal from 'sweetalert';
+import { commonApiError } from 'admin/errorModule';
 
 interface IListProps {
   getTestList: any;
@@ -93,14 +94,23 @@ const TestList = ({
   });
 
   React.useEffect(() => {
-    getTestList(params).then(({ data }: any) => {
-      setTests(data);
-      setLoading(false);
-    });
-    getUserGroup().then(({ data }: any) => {
-      setAssignData((oldData: any) => ({ ...oldData, groups: data.groups }));
-      setLoading(false);
-    });
+    getTestList(params)
+      .then(({ data }: any) => {
+        setTests(data);
+        setLoading(false);
+      })
+      .catch((err: any) => {
+        commonApiError(err)
+      });
+
+    getUserGroup()
+      .then(({ data }: any) => {
+        setAssignData((oldData: any) => ({ ...oldData, groups: data.groups }));
+        setLoading(false);
+      })
+      .catch((err: any) => {
+        commonApiError(err)
+      });
   }, [params]);
 
   const handleSearch = (values: any) => {
@@ -140,7 +150,10 @@ const TestList = ({
       }).then(() => {
         setShowAssignTestToStudentModal(null);
         setLoading(false);
-      });
+      })
+        .catch((err: any) => {
+          commonApiError(err)
+        });
     } else if (data?.status === 200) {
       swal({
         title: 'Error',

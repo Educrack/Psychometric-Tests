@@ -6,6 +6,7 @@ import SelectQuestionsModal from './select-questions-modal';
 import Questions from './questions';
 import EducrackAPI from '@lipihipi/client-sdk';
 import { TestSchema } from './test.schema';
+import { commonApiError } from 'admin/errorModule';
 
 const CreateTest = ({
   id,
@@ -27,9 +28,14 @@ const CreateTest = ({
 
   useEffect(() => {
     if (id) {
-      getTest(id).then(({ data }: any) => {
-        setData(data);
-      });
+      getTest(id)
+        .then(({ data }: any) => {
+          setData(data);
+          setLoading(false)
+        })
+        .catch((err: any) => {
+          commonApiError(err)
+        });
     }
   }, []);
 
@@ -92,12 +98,7 @@ const CreateTest = ({
         });
       })
       .catch((err: any) => {
-        swal({
-          title: 'Error',
-          text: err?.data?.message || 'Server Error!',
-          icon: 'error',
-          dangerMode: true,
-        });
+        commonApiError(err)
       });
   };
 
