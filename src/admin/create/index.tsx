@@ -6,7 +6,24 @@ import {
 import { Row, Col, Button, PageHeader, Loader } from '@lipihipi/ec-ui';
 import swal from 'sweetalert';
 import { QuestionsSchema } from './question.schema';
-import { commonApiError } from 'admin/create/errorModule';
+
+export const commonApiError = (
+    error: any,
+    setLoading?: any,
+    history?: any,
+    url?: string
+  ) => {
+    swal({
+      title: 'Error',
+      text: error?.message|| error?.data?.message || 'Something went wrong, please try after some time.',
+      icon: 'error',
+    }).then(() => {
+      setLoading(false);
+      if (url) {
+        history.push('/dashboard');
+      }
+    });
+  };
 
 const CreateQuestion = ({
     id,

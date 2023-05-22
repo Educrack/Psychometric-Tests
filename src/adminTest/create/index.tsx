@@ -6,7 +6,7 @@ import SelectQuestionsModal from './select-questions-modal';
 import Questions from './questions';
 import EducrackAPI from '@lipihipi/client-sdk';
 import { TestSchema } from './test.schema';
-import { commonApiError } from 'admin/create/errorModule';
+import { commonApiError } from '../../admin/create/index';
 
 const CreateTest = ({
   id,

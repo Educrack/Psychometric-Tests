@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Select, CheckBox, Input } from '@lipihipi/form';
 import { Button, Modal, Pagination, Table } from '@lipihipi/ec-ui';
 import { MdSearch } from 'react-icons/md';
-import { commonApiError } from 'admin/create/errorModule';
+import { commonApiError } from '../../admin/create/index';
 
 const mapOptions = (values: any[]) => {
   return values.map(value => ({ label: value.name, value: value._id }));
