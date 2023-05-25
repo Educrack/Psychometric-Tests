@@ -9,6 +9,7 @@ import {
   PageHeader,
   PaginatedTable,
 } from '@lipihipi/ec-ui';
+import EduCrackAPI from '@lipihipi/client-sdk';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { MdSearch } from 'react-icons/md';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
@@ -93,6 +94,15 @@ const TestList = ({
     groups: [],
   });
 
+  const [center, setCenter] = useState<any>([]);
+
+  React.useEffect(() => {
+    //@ts-ignore
+    EduCrackAPI.center.list().then(({ data }: any) => {
+      setCenter(data.centers);
+    });
+  }, [])
+
   React.useEffect(() => {
     getTestList(params)
       .then(({ data }: any) => {
@@ -138,42 +148,64 @@ const TestList = ({
     }
   };
 
-  const apiStatus = (data: any, text: string) => {
-    if (
-      data?.status === 200 &&
-      data?.data?.message === 'Successfully Assigned'
-    ) {
-      swal({
-        title: 'Success',
-        text,
-        icon: 'success',
-      }).then(() => {
-        setShowAssignTestToStudentModal(null);
-        setLoading(false);
-      })
-        .catch((err: any) => {
-          commonApiError(err)
+  // const apiStatus = (data: any, text: string) => {
+  //   if (
+  //     data?.status === 200 &&
+  //     data?.data?.message === 'Successfully Assigned'
+  //   ) {
+  //     swal({
+  //       title: 'Success',
+  //       text,
+  //       icon: 'success',
+  //     }).then(() => {
+  //       setShowAssignTestToStudentModal(null);
+  //       setLoading(false);
+  //     })
+  //       .catch((err: any) => {
+  //         commonApiError(err)
+  //       });
+  //   } else if (data?.status === 200) {
+  //     swal({
+  //       title: 'Error',
+  //       text: data?.data?.message,
+  //       icon: 'warning',
+  //     }).then(() => {
+  //       setShowAssignTestToStudentModal(null);
+  //       setLoading(false);
+  //     });
+  //   } else {
+  //     swal({
+  //       title: 'Error',
+  //       text: 'Server Error!',
+  //       icon: 'error',
+  //     }).then(() => {
+  //       setShowAssignTestToStudentModal(null);
+  //       setLoading(false);
+  //     });
+  //   }
+  // };
+
+  const apiStatus = (status: number, text: string) => {
+    if (status === 200) {
+        swal({
+            title: 'Success',
+            text,
+            icon: 'success',
+        }).then(() => {
+          setShowAssignTestToStudentModal(null);
+            setLoading(false);
         });
-    } else if (data?.status === 200) {
-      swal({
-        title: 'Error',
-        text: data?.data?.message,
-        icon: 'warning',
-      }).then(() => {
-        setShowAssignTestToStudentModal(null);
-        setLoading(false);
-      });
     } else {
-      swal({
-        title: 'Error',
-        text: 'Server Error!',
-        icon: 'error',
-      }).then(() => {
-        setShowAssignTestToStudentModal(null);
-        setLoading(false);
-      });
+        swal({
+            title: 'Error',
+            text: 'Server Error!',
+            icon: 'error',
+        }).then(() => {
+          setShowAssignTestToStudentModal(null);
+            setLoading(false);
+        });
     }
-  };
+};
 
   return (
     <>
@@ -264,6 +296,15 @@ const TestList = ({
                       >
                         Assign To Candidate
                       </li>
+                      <li onClick={() => {
+                        setShowAssignTestToStudentModal('center')
+                        setAssignPayload((oldData: any) => ({
+                          ...oldData,
+                          test: data?._id,
+                        }));
+                      }}>
+                        Assign to Centers
+                      </li>
                     </Menu>
                   </ListItemAction>
                 ),
@@ -352,6 +393,62 @@ const TestList = ({
                       </div>
                     </>
                   )}
+                  <footer className="text-center mb-4">
+                    <hr />
+                    <br />
+                    <Button className="px-5" shape="primary" type="submit">
+                      SAVE
+                    </Button>
+                    <Button
+                      className="px-5"
+                      shape="primary"
+                      onClick={() => setShowAssignTestToStudentModal('')}
+                    >
+                      Close
+                    </Button>
+                  </footer>
+                </>
+              )}
+            </Form>
+          </Modal>
+        )}
+
+        {showAssignTestToStudentModal !== '' && (
+          <Modal
+            isOpen={
+              showAssignTestToStudentModal === 'center'
+            }
+            onRequestClose={() => setShowAssignTestToStudentModal('')}
+          >
+            <Form
+              initialValues={{ ...assignPayload }}
+              onSubmit={handleSubmit}
+            >
+              <header
+                className="text-center mb-4"
+                style={{ minWidth: '320px' }}
+              >
+                <Label
+                  id="topic_header"
+                  label={'Assign Program To Center'}
+                  className="text-dark font-weight-bolder"
+                />
+                <br />
+                <hr />
+              </header>
+              {loading ? (
+                <div>Loading..</div>
+              ) : (
+                <>
+                  <Select
+                    id={'center'}
+                    name={'center'}
+                    placeholder={'Select a Center'}
+                    options={mapOptions(
+                      center
+                    )}
+                    isMulti={true}
+                  />
                   <footer className="text-center mb-4">
                     <hr />
                     <br />
