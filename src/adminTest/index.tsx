@@ -31,10 +31,13 @@ interface IListProps {
   onUpdateTest: any;
 }
 
-export const showErrorPopup = (setLoading: any) => {
+export const showErrorPopup = (error: any, setLoading: any) => {
   swal({
-    title: 'Error',
-    text: 'Server error!',
+    title: error?.data?.message || 'Error',
+    text:
+      error?.data?.error?.code === 11000
+        ? `Duplicate ${JSON.stringify(error?.data?.error?.keyValue)}`
+        : 'Server error!',
     icon: 'error',
     dangerMode: false,
   });
@@ -101,7 +104,7 @@ const TestList = ({
     EduCrackAPI.center.list().then(({ data }: any) => {
       setCenter(data.centers);
     });
-  }, [])
+  }, []);
 
   React.useEffect(() => {
     getTestList(params)
@@ -110,7 +113,7 @@ const TestList = ({
         setLoading(false);
       })
       .catch((err: any) => {
-        commonApiError(err)
+        commonApiError(err);
       });
 
     getUserGroup()
@@ -119,7 +122,7 @@ const TestList = ({
         setLoading(false);
       })
       .catch((err: any) => {
-        commonApiError(err)
+        commonApiError(err);
       });
   }, [params]);
 
@@ -142,9 +145,9 @@ const TestList = ({
         return;
       }
       const data = await assignTest(values);
-      apiStatus(data, 'Test Assigned.');
-    } catch {
-      showErrorPopup(setLoading);
+      apiStatus(data?.status, 'Test Assigned.');
+    } catch (error) {
+      showErrorPopup(error, setLoading);
     }
   };
 
@@ -187,25 +190,25 @@ const TestList = ({
 
   const apiStatus = (status: number, text: string) => {
     if (status === 200) {
-        swal({
-            title: 'Success',
-            text,
-            icon: 'success',
-        }).then(() => {
-          setShowAssignTestToStudentModal(null);
-            setLoading(false);
-        });
+      swal({
+        title: 'Success',
+        text,
+        icon: 'success',
+      }).then(() => {
+        setShowAssignTestToStudentModal(null);
+        setLoading(false);
+      });
     } else {
-        swal({
-            title: 'Error',
-            text: 'Server Error!',
-            icon: 'error',
-        }).then(() => {
-          setShowAssignTestToStudentModal(null);
-            setLoading(false);
-        });
+      swal({
+        title: 'Error',
+        text: 'Server Error!',
+        icon: 'error',
+      }).then(() => {
+        setShowAssignTestToStudentModal(null);
+        setLoading(false);
+      });
     }
-};
+  };
 
   return (
     <>
@@ -296,13 +299,15 @@ const TestList = ({
                       >
                         Assign To Candidate
                       </li>
-                      <li onClick={() => {
-                        setShowAssignTestToStudentModal('center')
-                        setAssignPayload((oldData: any) => ({
-                          ...oldData,
-                          test: data?._id,
-                        }));
-                      }}>
+                      <li
+                        onClick={() => {
+                          setShowAssignTestToStudentModal('center');
+                          setAssignPayload((oldData: any) => ({
+                            ...oldData,
+                            test: data?._id,
+                          }));
+                        }}
+                      >
                         Assign to Centers
                       </li>
                     </Menu>
@@ -415,15 +420,10 @@ const TestList = ({
 
         {showAssignTestToStudentModal !== '' && (
           <Modal
-            isOpen={
-              showAssignTestToStudentModal === 'center'
-            }
+            isOpen={showAssignTestToStudentModal === 'center'}
             onRequestClose={() => setShowAssignTestToStudentModal('')}
           >
-            <Form
-              initialValues={{ ...assignPayload }}
-              onSubmit={handleSubmit}
-            >
+            <Form initialValues={{ ...assignPayload }} onSubmit={handleSubmit}>
               <header
                 className="text-center mb-4"
                 style={{ minWidth: '320px' }}
@@ -444,9 +444,7 @@ const TestList = ({
                     id={'center'}
                     name={'center'}
                     placeholder={'Select a Center'}
-                    options={mapOptions(
-                      center
-                    )}
+                    options={mapOptions(center)}
                     isMulti={true}
                   />
                   <footer className="text-center mb-4">
