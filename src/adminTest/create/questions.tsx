@@ -35,13 +35,33 @@ const Questions = ({ data, updateQuestionData }: any) => {
             data={dataValue}
             columns={[
               {
+                dataRenderer: (data, index) => (
+                  <>
+                    <div className='d-none'>
+                      {data.text}
+                    </div>
+                    {index + 1}.
+                  </>
+                ),
+                title: 'Sr.No',
+                width: '70px',
+              },
+              {
                 dataRenderer: (data: any) => (
                   <>
                     {data?.text}
                   </>
                 ),
-                title: '',
-                width: 'calc(100% - (80px + 140px))',
+                title: 'Questions',
+                width: 'calc(100% - (70px + 150px))',
+              },
+              {
+                dataRenderer: () => (
+                  <>
+                  </>
+                ),
+                title: `Total Questions: ${dataValue.length}`,
+                width: '150px',
               },
             ]}
             isDraggable={true}

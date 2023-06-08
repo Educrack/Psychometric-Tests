@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Select, CheckBox, Input } from '@lipihipi/form';
+import { Form, CheckBox, Input } from '@lipihipi/form';
 import { Button, Modal, Pagination, Table } from '@lipihipi/ec-ui';
 import { MdSearch } from 'react-icons/md';
 import { commonApiError } from '../../admin/create/index';
 
-const mapOptions = (values: any[]) => {
-  return values.map(value => ({ label: value.name, value: value._id }));
-};
+// const mapOptions = (values: any[]) => {
+//   return values.map(value => ({ label: value.name, value: value._id }));
+// };
 
 const SelectQuestionsModal = ({
   isOpen,
@@ -24,7 +24,7 @@ const SelectQuestionsModal = ({
     totalItems: 0,
     questions: [],
   });
-  const [topics] = React.useState<any>([]);
+  // const [topics] = React.useState<any>([]);
 
   useEffect(() => {
     getQuestions({ ...params })
@@ -87,12 +87,12 @@ const SelectQuestionsModal = ({
     <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
       <div className="question-bank">
         <div>
-          <div style={{ marginBottom: '20px' }}>
+          {/* <div style={{ marginBottom: '20px' }}>
             <h3>
               {`You are attaching a file from Library for the Batch : ${initialValues?.name ||
                 'NA'}`}
             </h3>
-          </div>
+          </div> */}
 
           <div style={{ marginBottom: '20px' }}>
             <div className="row">
@@ -104,21 +104,22 @@ const SelectQuestionsModal = ({
                     topic: '',
                   }}
                   onSubmit={handleSearch}
-                  render={({ submitForm }: any) => {
+                  render={() => {
                     return (
                       <>
-                        <div className="row">
-                          <div className="col-md-4">
+                        <div className="row mb-3 align-items-end">
+                          <div className="col-md-10">
                             <Input
                               prefix={<MdSearch />}
                               id="q"
+                              className='form-group m-0'
                               name="q"
                               label="Search by keyword"
                               placeholder="Search the content here"
                             />
                           </div>
 
-                          <div className="col-12 col-md-4">
+                          {/* <div className="col-12 col-md-4">
                             <Select
                               id="topic"
                               name="topic"
@@ -130,14 +131,17 @@ const SelectQuestionsModal = ({
                               ]}
                               onChange={submitForm}
                             />
-                          </div>
+                          </div> */}
+
+                          <div className="col-md-2">
                           <Button
                             shape="primary"
-                            className="d-none"
+                            className=""
                             type="submit"
                           >
                             Search
-                          </Button>
+                            </Button>
+                          </div>
                         </div>
                       </>
                     );
@@ -177,11 +181,12 @@ const SelectQuestionsModal = ({
                   </>
                 ),
                 title: '',
-                width: '30%',
+                width: '50px',
               },
               {
                 dataRenderer: (data: any) => <>{data?.text}</>,
                 title: 'Questions',
+                width: 'calc(100% - 50px)',
               },
             ]}
           />

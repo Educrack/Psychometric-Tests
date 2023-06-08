@@ -130,7 +130,7 @@ const CreateTest = ({
                 <>
                   <div>
                     <Row spacing={20}>
-                      <Col xs={12} md={12}>
+                      <Col xs={12} md={5}>
                         <Input
                           id="name"
                           name="name"
@@ -139,7 +139,7 @@ const CreateTest = ({
                           required
                         />
                       </Col>
-                      <Col xs={12} md={6}>
+                      <Col xs={12} md={3}>
                         <Input
                           id="totalDurationInMinute"
                           name="totalDurationInMinute"
@@ -148,17 +148,19 @@ const CreateTest = ({
                           required
                         />
                       </Col>
-                      <Col xs={12} md={6}>
-                        <RichTextEditor
-                          id={'instruction'}
-                          name={'instruction'}
-                          label={'Instructions'}
-                          required
-                          uploadFile={createAsset}
-                          getAssetUrl={getAssetUrl}
-                        />
+                      <Col xs={12} md={12}>
+                        <div className='form-group'>
+                          <RichTextEditor
+                            id={'instruction'}
+                            name={'instruction'}
+                            label={'Instructions'}
+                            required
+                            uploadFile={createAsset}
+                            getAssetUrl={getAssetUrl}
+                          />
+                        </div>
                       </Col>
-                      <Col>
+                      <Col xs={12} md={12}>
                         <Button
                           className="px-5"
                           shape="secondary"
@@ -174,11 +176,9 @@ const CreateTest = ({
                   </div>
                   <Questions data={questionData} updateQuestionData={updateQuestionData} />
                   <div className="mt-3">
-                    <div className="row ml-0">
-                      <Button shape="primary" className="ml-3" type="submit">
-                        Save{' '}
-                      </Button>
-                    </div>
+                    <Button shape="primary" type="submit">
+                      Save
+                    </Button>
                   </div>
                 </>
               );
