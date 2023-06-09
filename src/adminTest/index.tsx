@@ -13,10 +13,11 @@ import EduCrackAPI from '@lipihipi/client-sdk';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { MdSearch } from 'react-icons/md';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { Form, Input, Label, Select } from '@lipihipi/form';
+import { Form, Input, Label } from '@lipihipi/form';
 import SearchableSelect from '../components/searchable-select';
 import swal from 'sweetalert';
 import { commonApiError } from '../admin/create/index';
+import { Select } from '../components/select/select';
 
 interface IListProps {
   getTestList: any;
@@ -44,9 +45,9 @@ export const showErrorPopup = (error: any, setLoading: any) => {
   setLoading(false);
 };
 
-const mapOptions = (values: any[]) => {
-  return values?.map(value => ({ label: value.name, value: value._id }));
-};
+// const mapOptions = (values: any[]) => {
+//   return values?.map(value => ({ label: value.name, value: value._id }));
+// };
 
 export const getComponent = (onClick: any, name: string) => {
   return (
@@ -107,15 +108,7 @@ const TestList = ({
   }, []);
 
   React.useEffect(() => {
-    getTestList(params)
-      .then(({ data }: any) => {
-        setTests(data);
-        setLoading(false);
-      })
-      .catch((err: any) => {
-        commonApiError(err);
-      });
-
+    getTestListData();
     getUserGroup()
       .then(({ data }: any) => {
         setAssignData((oldData: any) => ({ ...oldData, groups: data.groups }));
@@ -125,6 +118,17 @@ const TestList = ({
         commonApiError(err);
       });
   }, [params]);
+
+  const getTestListData = () => {
+    getTestList(params)
+      .then(({ data }: any) => {
+        setTests(data);
+        setLoading(false);
+      })
+      .catch((err: any) => {
+        commonApiError(err);
+      });
+  };
 
   const handleSearch = (values: any) => {
     setParams({
@@ -197,6 +201,7 @@ const TestList = ({
       }).then(() => {
         setShowAssignTestToStudentModal(null);
         setLoading(false);
+        getTestListData();
       });
     } else {
       swal({
@@ -305,6 +310,7 @@ const TestList = ({
                           setAssignPayload((oldData: any) => ({
                             ...oldData,
                             test: data?._id,
+                            center: data?.center,
                           }));
                         }}
                       >
@@ -370,12 +376,13 @@ const TestList = ({
                         ? 'Select Group'
                         : 'Select a Center'
                     }
-                    options={mapOptions(
+                    options={
                       showAssignTestToStudentModal === 'candidate'
                         ? assignData?.groups
                         : assignData?.centers
-                    )}
+                    }
                     isMulti={showAssignTestToStudentModal === 'center'}
+                    onChange={() => {}}
                   />
                   {showAssignTestToStudentModal === 'candidate' && (
                     <>
@@ -444,8 +451,9 @@ const TestList = ({
                     id={'center'}
                     name={'center'}
                     placeholder={'Select a Center'}
-                    options={mapOptions(center)}
+                    options={center}
                     isMulti={true}
+                    onChange={() => {}}
                   />
                   <footer className="text-center mb-4">
                     <hr />
