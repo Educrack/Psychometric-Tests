@@ -41,6 +41,7 @@ export const adminTestList = () => {
           getUserByName={EduCrackAPI.user.list}
           assignTest={EducrackAPI.psychometricUserTest.assign}
           onUpdateTest={EduCrackAPI.psychometricTest.update}
+          role="superadmin"
         />
       )}
     </BrowserRouter>

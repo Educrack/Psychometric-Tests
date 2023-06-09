@@ -30,6 +30,7 @@ interface IListProps {
   getUserGroup: any;
   getUserByName: any;
   onUpdateTest: any;
+  role: string;
 }
 
 export const showErrorPopup = (error: any, setLoading: any) => {
@@ -68,6 +69,7 @@ const TestList = ({
   getUserByName,
   assignTest,
   onUpdateTest,
+  role,
 }: IListProps) => {
   const [loading, setLoading] = useState(true);
 
@@ -304,18 +306,20 @@ const TestList = ({
                       >
                         Assign To Candidate
                       </li>
-                      <li
-                        onClick={() => {
-                          setShowAssignTestToStudentModal('center');
-                          setAssignPayload((oldData: any) => ({
-                            ...oldData,
-                            test: data?._id,
-                            center: data?.center,
-                          }));
-                        }}
-                      >
-                        Assign to Centers
-                      </li>
+                      {role === 'superadmin' && (
+                        <li
+                          onClick={() => {
+                            setShowAssignTestToStudentModal('center');
+                            setAssignPayload((oldData: any) => ({
+                              ...oldData,
+                              test: data?._id,
+                              center: data?.center,
+                            }));
+                          }}
+                        >
+                          Assign to Centers
+                        </li>
+                      )}
                     </Menu>
                   </ListItemAction>
                 ),
